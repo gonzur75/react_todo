@@ -1,11 +1,17 @@
 .Header {
   /*width*/
   background-color: #282c34;
-  min-height: 100vh;
+  height: 100px;
   display: flex;
   flex-direction: row;
   gap: 50px;
   justify-content: center;
+  justify-items: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+.HeaderH1 {
+  text-align:center;
+  line-height:100px;
+  height:100px;
 }

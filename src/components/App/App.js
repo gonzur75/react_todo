@@ -1,13 +1,36 @@
 import './App.css';
 import {Header} from "../Header/Header";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {getTasks} from "../../views/Operations/oparations";
+import {Task} from "../../views/Tasks/tasks";
+
+
+function NewTask() {
+    return null;
+}
 
 function App() {
-    const [task, setTask] = useState()
+    const [tasks, setTask] = useState([])
+
+    function updateTask(data) {
+        setTask(data)
+    }
+
+    useEffect(()=>{
+        getTasks(updateTask)
+
+    }, [])
 
     return (
-        <div className="App">
+        <div className="container mb-5">
             <Header/>
+            <NewTask/>
+            {tasks.map((task)=> {
+                console.log(task)
+                return <Task key={task.id} task={task}/>
+            })
+            }
+            <Task/>
         </div>
     );
 }
