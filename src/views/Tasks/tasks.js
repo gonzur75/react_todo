@@ -1,5 +1,16 @@
+import {useEffect, useState} from "react";
+
 export function Task({task}) {
-    if (task) {
+
+    const [status, setStatus] = useState(null)
+
+    useEffect(() => {
+        setStatus(task.status);
+        console.log(status)
+    }, [status])
+
+
+
         return (
             <>
                 <section className="card mt-5 shadow-sm">
@@ -34,5 +45,5 @@ export function Task({task}) {
                 </section>
             </>
         );
-    }
+
 }

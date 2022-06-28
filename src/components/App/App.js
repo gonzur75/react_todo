@@ -2,12 +2,9 @@ import './App.css';
 import {Header} from "../Header/Header";
 import {useEffect, useState} from "react";
 import {getTasks} from "../../views/Operations/oparations";
-import {Task} from "../../views/Tasks/tasks";
+import {NewTask} from "../../views/Tasks/NewTask";
+import {RenderTask} from "../../views/Tasks/RenderTasks";
 
-
-function NewTask() {
-    return null;
-}
 
 function App() {
     const [tasks, setTask] = useState([])
@@ -16,23 +13,21 @@ function App() {
         setTask(data)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getTasks(updateTask)
 
     }, [])
 
-    return (
-        <div className="container mb-5">
+    const onRemoveTask = (taskId) => {
+        const updatedTasks = tasks.filter(task => task.id !== taskId);
+        updateTask(updatedTasks)
+    }
+
+    return (<div className="container mb-5">
             <Header/>
             <NewTask/>
-            {tasks.map((task)=> {
-                console.log(task)
-                return <Task key={task.id} task={task}/>
-            })
-            }
-            <Task/>
-        </div>
-    );
+            <RenderTask tasks={tasks} onRemoveTask={onRemoveTask}/>
+        </div>);
 }
 
 export default App;
