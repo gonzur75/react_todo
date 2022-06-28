@@ -9,8 +9,8 @@ function ButtonSaveTime({operationData, addTimeFormValue}) {
     function handleClick(e) {
 
         const newOperation = {
-            description:operationData.description,
-            timeSpent: parseFloat(operationData.timeSpent) +  parseFloat(addTimeFormValue)
+            description: operationData.description,
+            timeSpent: parseFloat(operationData.timeSpent) + parseFloat(addTimeFormValue)
         }
 
         e.preventDefault()
@@ -21,7 +21,16 @@ function ButtonSaveTime({operationData, addTimeFormValue}) {
     return <button onClick={handleClick} className="btn btn-outline-success"><FaSave/></button>;
 }
 
-function AddTimeForm({visible, operationData}) {
+function CloseTimeFormButton({setAddTimeFormState, setAddTimeDivState}) {
+    function handleClick(e) {
+        e.preventDefault()
+        flipAddtimeForm(setAddTimeFormState, setAddTimeDivState)
+    }
+
+    return <button onClick={handleClick} className="btn btn-outline-dark"><FaTimes/></button>;
+}
+
+function AddTimeForm({visible, operationData, setAddTimeFormState, setAddTimeDivState}) {
     const [addTimeFormValue, setAddTimeFormValue] = useState('')
 
 
@@ -36,8 +45,10 @@ function AddTimeForm({visible, operationData}) {
                        onChange={(e) => setAddTimeFormValue(e.target.value)}
                 />
                 <div className="input-group-append">
-                    <ButtonSaveTime operationData={operationData} addTimeFormValue={addTimeFormValue} />
-                    <button className="btn btn-outline-dark"><FaTimes/></button>
+                    <ButtonSaveTime operationData={operationData} addTimeFormValue={addTimeFormValue}/>
+                    <CloseTimeFormButton
+                        setAddTimeFormState={setAddTimeFormState}
+                        setAddTimeDivState={setAddTimeDivState}/>
                 </div>
             </div>
         </form>;
@@ -45,14 +56,19 @@ function AddTimeForm({visible, operationData}) {
 }
 
 
+function flipAddtimeForm(setAddTimeFormState, setAddTimeDivState) {
+    setAddTimeFormState(prevState => !prevState)
+    setAddTimeDivState(prevState => !prevState)
+}
+
 function AddTimeButton({setAddTimeFormState, setAddTimeDivState}) {
 
     function handleClick(e) {
         e.preventDefault()
-        setAddTimeFormState(prevState => !prevState)
-        setAddTimeDivState(prevState => !prevState)
+        flipAddtimeForm(setAddTimeFormState, setAddTimeDivState);
 
     }
+
 
     return <button onClick={handleClick} className="btn btn-outline-success btn-sm mr-2">
         Add time <FaClock/>
@@ -73,7 +89,11 @@ export function Operation({operationData}) {
 
 
             {/*Formularz wyświetlany po naciśnięciu "Add time", po zapisie czasu znika */}
-            <AddTimeForm visible={addTimeFormState} operationData={operationData}/>
+            <AddTimeForm visible={addTimeFormState}
+                         operationData={operationData}
+                         setAddTimeFormState={setAddTimeFormState}
+                         setAddTimeDivState={setAddTimeDivState}
+            />
 
 
             {/*div wyświetlany domyślnie, znika po wciśnięciu "Add time" */}
