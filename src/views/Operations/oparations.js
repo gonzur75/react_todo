@@ -22,7 +22,8 @@ export const getTasks = async (successCallback) => {
     }
 };
 
-export const getTasksOperations= async (successCallback, id) => {
+export const getTasksOperations= async (id) => {
+
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}/operations`, {
             headers: {
@@ -32,12 +33,30 @@ export const getTasksOperations= async (successCallback, id) => {
 
         const data = await response.json();
 
-        if (data.error || typeof successCallback !== "function") {
+        if (data.error) {
             throw new Error("Błąd!");
         }
-        successCallback(data.data);
+
+        return data.data
     } catch (err) {
         console.log(err);
     }
 };
 
+export const  AddTaskOperations = async (data={}, id) => {
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}/operations`, {
+            headers: {
+                Authorization: process.env.REACT_APP_API_KEY,
+                "Content-Type": "application/json"
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+
+
+    } catch (err) {
+        console.log(err);
+    }
+};

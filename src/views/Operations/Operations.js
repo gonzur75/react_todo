@@ -1,41 +1,64 @@
-import {FaClock, FaSave, FaTimes, FaTrash} from "react-icons/fa";
+import {FaPlusCircle} from "react-icons/fa";
+import {RenderOperation} from "./RenderOperation";
+import {useState} from "react";
+import {AddTaskOperations} from "./oparations";
 
-export function Operation({operationData}) {
-    return (<li className="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-                {operationData.description}
-                {/*Czas wyświetlany tylko jeżeli większy od 0 */}
-                <span className="badge badge-success badge-pill ml-2">
-      2h 15m
-    </span>
-            </div>
+function AddButton({task, setOperations, formValue, setFormValue,setForm }) {
 
+    function handleClick(e) {
+        e.preventDefault()
+        const newOperation ={
+            description: formValue,
+            timeSpent: 0
+        }
+        AddTaskOperations(newOperation, task).then(setOperations(newOperation))
+        setFormValue('')
+        setForm(false)
 
-            {/*Formularz wyświetlany po naciśnięciu "Add time", po zapisie czasu znika */}
-            <form>
-                <div className="input-group input-group-sm">
-                    <input type="number"
-                           className="form-control"
-                           placeholder="Spent time in minutes"
-                           style={{width: '12rem'}}/>
-                    <div className="input-group-append">
-                        <button className="btn btn-outline-success"><FaSave/></button>
-                        <button className="btn btn-outline-dark"><FaTimes/></button>
-                    </div>
+    }
+
+    return <button onClick={handleClick} className="btn btn-info">
+        Add
+        <FaPlusCircle className="ml-1"/>
+    </button>;
+}
+
+function AddOperationForm({props}) {
+    const [formValue, setFormValue] = useState('')
+
+    if (props.form === true) {
+        return <form>
+            <div className="input-group">
+                <input onChange={event => {setFormValue(event.target.value)}}
+                       value={formValue}
+                       type="text"
+                       className="form-control"
+                       placeholder="Operation description"/>
+
+                <div className="input-group-append">
+                    <AddButton setOperations={props.setOperations}
+                               task={props.taskID}
+                               formValue={formValue}
+                               setFormValue={setFormValue}
+                               setForm={props.setForm}
+                               set
+                    />
                 </div>
-            </form>
-
-
-            {/*div wyświetlany domyślnie, znika po wciśnięciu "Add time" */}
-            <div>
-                {/*Przycisk widoczny tylko jeżeli status zadania jest "open"*/}
-                <button className="btn btn-outline-success btn-sm mr-2">
-                    Add time <FaClock/>
-                </button>
-
-                <button className="btn btn-outline-danger btn-sm"><FaTrash/></button>
             </div>
-        </li>
+        </form>;
+    }
 
-    );
+}
+
+export function Operations(props) {
+
+    return (<>
+        <div className="card-body">
+            <AddOperationForm props={props}/>
+        </div>
+
+        <ul className="list-group list-group-flush">
+            <RenderOperation operations={props.operations}/>
+        </ul>
+    </>);
 }

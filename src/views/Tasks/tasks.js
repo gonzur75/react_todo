@@ -1,33 +1,39 @@
 import {useEffect, useState} from "react";
 import {FaArchive, FaTrash} from "react-icons/fa";
 import {getTasksOperations} from "../Operations/oparations";
-import {Operations} from "../Operations/Operation";
+import {Operations} from "../Operations/Operations";
 
-function ButtonAddOperations() {
-    return <button className="btn btn-info btn-sm mr-2" onClick={null}>
+function ButtonAddOperations({switchFormStatus}) {
+
+    return <button onClick={switchFormStatus} className="btn btn-info btn-sm mr-2" >
         Add operation
     </button>;
 }
 
 
 export function Task({task}) {
-
+    const [formStatus, setFormStatus] = useState(false)
     const [status, setStatus] = useState(null)
     const [operations, setOperations] = useState([])
 
     useEffect(() => {
-
         setStatus(task.status);
+    }, [])
 
-    }, [status])
+    // useEffect(()=> {
+    //     setFormStatus(false)
+    // }, [formStatus])
 
-    function updateOpertations(data) {
-        setOperations(data)
+    function switchFormStatus() {
+        setFormStatus(prevState => !prevState)
+    }
 
+    function updateOperations(data) {
+        setOperations(prevState => [...prevState, data])
     }
 
     useEffect(() => {
-        getTasksOperations(updateOpertations, task.id)
+        getTasksOperations(task.id).then(data=> setOperations(data))
 
     }, [])
 
@@ -44,7 +50,7 @@ export function Task({task}) {
                         {/*// Przyciski "Add operation" i "Finish" mają być widoczne*/}
                         {/*// tylko jeżeli status zadania jest "open"*/}
 
-                        <ButtonAddOperations/>
+                        <ButtonAddOperations switchFormStatus={switchFormStatus}/>
                         <button className="btn btn-dark btn-sm">
                             Finish <FaArchive/>
                         </button>
@@ -57,7 +63,11 @@ export function Task({task}) {
                         </button>
                     </div>
                 </div>
-                <Operations operations={operations}/>
+                <Operations operations={operations} form={formStatus}
+                    setForm={setFormStatus}
+                    setOperations={updateOperations}
+                    status={status}
+                    taskID={task.id}/>
             </section>
         </>);
 
