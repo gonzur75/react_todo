@@ -1,8 +1,27 @@
 import {FaClock, FaSave, FaTimes, FaTrash} from "react-icons/fa";
 import Badge from 'react-bootstrap/Badge'
 import {useState} from "react";
+import {ModifyTaskOperation} from "./oparations";
+import data from "bootstrap/js/src/dom/data";
 
-function AddTimeForm({visible}) {
+function ButtonSaveTime({operationData, addTimeFormValue}) {
+
+    function handleClick(e) {
+
+        const newOperation = {
+            description:operationData.description,
+            timeSpent: parseFloat(operationData.timeSpent) +  parseFloat(addTimeFormValue)
+        }
+
+        e.preventDefault()
+        ModifyTaskOperation(newOperation, operationData.task.id, operationData.id)
+
+    }
+
+    return <button onClick={handleClick} className="btn btn-outline-success"><FaSave/></button>;
+}
+
+function AddTimeForm({visible, operationData}) {
     const [addTimeFormValue, setAddTimeFormValue] = useState('')
 
 
@@ -12,9 +31,12 @@ function AddTimeForm({visible}) {
                 <input type="number"
                        className="form-control"
                        placeholder="Spent time in minutes"
-                       style={{width: "12rem"}}/>
+                       style={{width: "12rem"}}
+                       value={addTimeFormValue}
+                       onChange={(e) => setAddTimeFormValue(e.target.value)}
+                />
                 <div className="input-group-append">
-                    <button className="btn btn-outline-success"><FaSave/></button>
+                    <ButtonSaveTime operationData={operationData} addTimeFormValue={addTimeFormValue} />
                     <button className="btn btn-outline-dark"><FaTimes/></button>
                 </div>
             </div>
@@ -23,11 +45,12 @@ function AddTimeForm({visible}) {
 }
 
 
-function AddTimeButton({setAddTimeFormState}) {
+function AddTimeButton({setAddTimeFormState, setAddTimeDivState}) {
 
     function handleClick(e) {
         e.preventDefault()
         setAddTimeFormState(prevState => !prevState)
+        setAddTimeDivState(prevState => !prevState)
 
     }
 
@@ -38,27 +61,33 @@ function AddTimeButton({setAddTimeFormState}) {
 
 export function Operation({operationData}) {
     const [addTimeFormState, setAddTimeFormState] = useState(false)
+    const [addTimeDivState, setAddTimeDivState] = useState(true)
     return (
         <li className="list-group-item d-flex justify-content-between align-items-center">
             <div>
                 {operationData.description}
                 {operationData.timeSpent > 0 &&
-                    <Badge pill bg="success" style={{marginLeft: 12}}>{operationData.timeSpent}</Badge>
+                    <Badge pill bg="success" style={{marginLeft: 12}}>{operationData.timeSpent} min</Badge>
                 }
             </div>
 
 
             {/*Formularz wyświetlany po naciśnięciu "Add time", po zapisie czasu znika */}
-            <AddTimeForm visible={addTimeFormState} />
+            <AddTimeForm visible={addTimeFormState} operationData={operationData}/>
 
 
             {/*div wyświetlany domyślnie, znika po wciśnięciu "Add time" */}
-            <div>
-                {/*Przycisk widoczny tylko jeżeli status zadania jest "open"*/}
-                <AddTimeButton setAddTimeFormState={setAddTimeFormState} />
+            {addTimeDivState &&
+                <div>
+                    {/*Przycisk widoczny tylko jeżeli status zadania jest "open"*/}
+                    <AddTimeButton setAddTimeFormState={setAddTimeFormState}
+                                   setAddTimeDivState={setAddTimeDivState}
 
-                <button className="btn btn-outline-danger btn-sm"><FaTrash/></button>
-            </div>
+                    />
+                    <button className="btn btn-outline-danger btn-sm"><FaTrash/></button>
+                </div>
+            }
+
         </li>
 
     );

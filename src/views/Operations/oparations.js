@@ -22,7 +22,7 @@ export const getTasks = async (successCallback) => {
     }
 };
 
-export const getTasksOperations= async (id) => {
+export const getTasksOperations = async (id) => {
 
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}/operations`, {
@@ -43,7 +43,7 @@ export const getTasksOperations= async (id) => {
     }
 };
 
-export const  AddTaskOperations = async (data={}, id) => {
+export const AddTaskOperations = async (data = {}, id) => {
 
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}/operations`, {
@@ -52,6 +52,24 @@ export const  AddTaskOperations = async (data={}, id) => {
                 "Content-Type": "application/json"
             },
             method: 'POST',
+            body: JSON.stringify(data)
+        });
+
+
+    } catch (err) {
+        console.log(err);
+    }
+
+};
+export const ModifyTaskOperation = async (data = {}, id, operationId) => {
+
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/operations/${operationId}`, {
+            headers: {
+                Authorization: process.env.REACT_APP_API_KEY,
+                "Content-Type": "application/json"
+            },
+            method: 'PUT',
             body: JSON.stringify(data)
         });
 
