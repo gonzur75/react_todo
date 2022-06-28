@@ -1,6 +1,6 @@
 import {Task} from "./tasks";
 
-export function RenderTask({tasks}) {
+export function RenderTask({tasks, onRemoveTask}) {
     if (tasks.length > 0) {
         return tasks.map((task) => {
             console.log(task)
