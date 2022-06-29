@@ -1,8 +1,8 @@
-import {FaClock, FaSave, FaTimes, FaTrash} from "react-icons/fa";
+import {FaClock, FaSave, FaTrash} from "react-icons/fa";
 import Badge from 'react-bootstrap/Badge'
 import {useState} from "react";
 import {ModifyTaskOperation} from "./oparations";
-import data from "bootstrap/js/src/dom/data";
+import {CloseTimeFormButton} from "../../UI/Button/CloseTimeFormButton";
 
 function ButtonSaveTime({operationData, addTimeFormValue}) {
 
@@ -19,15 +19,6 @@ function ButtonSaveTime({operationData, addTimeFormValue}) {
     }
 
     return <button onClick={handleClick} className="btn btn-outline-success"><FaSave/></button>;
-}
-
-function CloseTimeFormButton({setAddTimeFormState, setAddTimeDivState}) {
-    function handleClick(e) {
-        e.preventDefault()
-        flipAddtimeForm(setAddTimeFormState, setAddTimeDivState)
-    }
-
-    return <button onClick={handleClick} className="btn btn-outline-dark"><FaTimes/></button>;
 }
 
 function AddTimeForm({visible, operationData, setAddTimeFormState, setAddTimeDivState}) {
@@ -56,7 +47,7 @@ function AddTimeForm({visible, operationData, setAddTimeFormState, setAddTimeDiv
 }
 
 
-function flipAddtimeForm(setAddTimeFormState, setAddTimeDivState) {
+export function flipAddTimeForm(setAddTimeFormState, setAddTimeDivState) {
     setAddTimeFormState(prevState => !prevState)
     setAddTimeDivState(prevState => !prevState)
 }
@@ -65,7 +56,7 @@ function AddTimeButton({setAddTimeFormState, setAddTimeDivState}) {
 
     function handleClick(e) {
         e.preventDefault()
-        flipAddtimeForm(setAddTimeFormState, setAddTimeDivState);
+        flipAddTimeForm(setAddTimeFormState, setAddTimeDivState);
 
     }
 
