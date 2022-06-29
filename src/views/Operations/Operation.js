@@ -1,8 +1,9 @@
-import {FaClock, FaTrash} from "react-icons/fa";
+import {FaTrash} from "react-icons/fa";
 import Badge from 'react-bootstrap/Badge'
 import {useState} from "react";
 import {CloseTimeFormButton} from "../../UI/Button/CloseTimeFormButton";
 import {ButtonSaveTime} from "../../UI/Button/ButtonSaveTime";
+import {AddTimeButton} from "../../UI/Button/AddTimeButton";
 
 function AddTimeForm({visible, operationData, setAddTimeFormState, setAddTimeDivState, setOperations}) {
     const [addTimeFormValue, setAddTimeFormValue] = useState('')
@@ -41,16 +42,14 @@ export function flipAddTimeForm(setAddTimeFormState, setAddTimeDivState) {
     setAddTimeDivState(prevState => !prevState)
 }
 
-function AddTimeButton({setAddTimeFormState, setAddTimeDivState}) {
-
-    function handleClick(e) {
-        e.preventDefault()
-        flipAddTimeForm(setAddTimeFormState, setAddTimeDivState);
+export function timeFormatted(number) {
+    if (number => 60) {
+        const hours = Math.floor(number / 60);
+        const minutes = number % 60
+        return hours + "h " + minutes + "m"
+    } else {
+        return number + "m"
     }
-
-    return <button onClick={handleClick} className="btn btn-outline-success btn-sm mr-2">
-        Add time <FaClock/>
-    </button>;
 }
 
 export function Operation({operationData, setOperations}) {
@@ -61,7 +60,7 @@ export function Operation({operationData, setOperations}) {
             <div>
                 {operationData.description}
                 {operationData.timeSpent > 0 &&
-                    <Badge pill bg="success" style={{marginLeft: 12}}>{operationData.timeSpent} min</Badge>
+                    <Badge pill bg="success" style={{marginLeft: 12}}>{timeFormatted(operationData.timeSpent)}</Badge>
                 }
             </div>
 
@@ -74,14 +73,12 @@ export function Operation({operationData, setOperations}) {
                          setOperations={setOperations}
             />
 
-
             {/*div wyświetlany domyślnie, znika po wciśnięciu "Add time" */}
             {addTimeDivState &&
                 <div>
                     {/*Przycisk widoczny tylko jeżeli status zadania jest "open"*/}
                     <AddTimeButton setAddTimeFormState={setAddTimeFormState}
                                    setAddTimeDivState={setAddTimeDivState}
-
                     />
                     <button className="btn btn-outline-danger btn-sm"><FaTrash/></button>
                 </div>
