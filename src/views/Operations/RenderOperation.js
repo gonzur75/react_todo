@@ -11,6 +11,6 @@ export function RenderOperation({operations, setOperations, onRemoveOperation}) 
             />
         })
     } else {
-        return <h1> Yuppi no more tasks to do!! </h1>
+        return <h4 className="list-group-item d-flex justify-content-between align-items-center"> There are no operations, please add one with 'Add operation' button!! </h4>
     }
 }
