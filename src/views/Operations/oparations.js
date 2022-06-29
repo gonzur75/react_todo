@@ -54,7 +54,13 @@ export const AddTaskOperations = async (data = {}, id) => {
             method: 'POST',
             body: JSON.stringify(data)
         });
+        const responseData = await response.json();
 
+        if (responseData.error) {
+            throw new Error("Błąd!");
+        }
+
+        return responseData
 
     } catch (err) {
         console.log(err);
@@ -64,7 +70,7 @@ export const AddTaskOperations = async (data = {}, id) => {
 export const ModifyTaskOperation = async (data = {}, operationId) => {
 
     try {
-        await fetch(`${process.env.REACT_APP_API_URL}/operations/${operationId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/operations/${operationId}`, {
             headers: {
                 Authorization: process.env.REACT_APP_API_KEY,
                 "Content-Type": "application/json"
@@ -72,6 +78,13 @@ export const ModifyTaskOperation = async (data = {}, operationId) => {
             method: 'PUT',
             body: JSON.stringify(data)
         });
+        const responseData = await response.json();
+
+        if (responseData.error) {
+            throw new Error("Błąd!");
+        }
+
+        return responseData
 
 
     } catch (err) {

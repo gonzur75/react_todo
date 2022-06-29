@@ -28,7 +28,7 @@ export function Task({task}) {
         setFormStatus(prevState => !prevState)
     }
 
-    function updateOperations(data) {
+    function updateOperations() {
         getTasksOperations(task.id).then(data=> setOperations(data))
     }
 

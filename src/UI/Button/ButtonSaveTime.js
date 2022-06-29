@@ -21,7 +21,7 @@ export function ButtonSaveTime({
         }
 
         e.preventDefault()
-        ModifyTaskOperation(newOperation, operationData.task.id, operationData.id).then(setOperations(newOperation))
+        ModifyTaskOperation(newOperation, operationData.id).then((data)=> data && setOperations())
         setAddTimeFormValue("")
         flipAddTimeForm(setAddTimeFormState, setAddTimeDivState)
     }
