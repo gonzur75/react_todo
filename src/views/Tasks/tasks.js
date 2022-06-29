@@ -29,7 +29,7 @@ export function Task({task}) {
     }
 
     function updateOperations(data) {
-        setOperations(prevState => [...prevState, data])
+        getTasksOperations(task.id).then(data=> setOperations(data))
     }
 
     useEffect(() => {

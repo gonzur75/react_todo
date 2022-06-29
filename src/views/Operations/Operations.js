@@ -26,6 +26,7 @@ function AddButton({task, setOperations, formValue, setFormValue,setForm }) {
 function AddOperationForm({props}) {
     const [formValue, setFormValue] = useState('')
 
+
     if (props.form === true) {
         return <form>
             <div className="input-group">
@@ -52,13 +53,17 @@ function AddOperationForm({props}) {
 
 export function Operations(props) {
 
+    function RemoveOperation() {
+        return null;
+    }
     return (<>
         <div className="card-body">
             <AddOperationForm props={props}/>
         </div>
 
         <ul className="list-group list-group-flush">
-            <RenderOperation operations={props.operations}/>
+            <RenderOperation operations={props.operations}
+                             setOperations={props.setOperations}/>
         </ul>
     </>);
 }
