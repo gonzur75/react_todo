@@ -34,7 +34,7 @@ function App() {
         <div className="container mb-5">
             <Header/>
             <NewTask onNewTask={onNewTask} />
-            <RenderTask tasks={tasks} onRemoveTask={onRemoveTask} />
+            <RenderTask tasks={tasks} onRemoveTask={onRemoveTask} updateTask={refreshTask} />
         </div>);
 }
 

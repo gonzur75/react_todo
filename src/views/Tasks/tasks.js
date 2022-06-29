@@ -1,28 +1,27 @@
 import {useEffect, useState} from "react";
-import {FaArchive, FaTrash} from "react-icons/fa";
-import {getTasksOperations, RemoveTaskOperation} from "../Operations/oparations";
+import {FaArchive} from "react-icons/fa";
+import {getTasksOperations, RemoveTaskOperation, updateTask} from "../Operations/oparations";
 import {Operations} from "../Operations/Operations";
-
-function ButtonAddOperations({switchFormStatus}) {
-
-    return <button onClick={switchFormStatus} className="btn btn-info btn-sm mr-2" >
-        Add operation
-    </button>;
-}
+import {RemoveTaskButton} from "../../UI/Button/removeTaskButton";
+import {ButtonAddOperations} from "../../UI/Button/switchFormStatus";
 
 
-function RemoveTaskButton({taskID, onRemoveTask}) {
+function FinishTaskButton({task, refreshTask}) {
 
-    function handleClick() {
-        onRemoveTask(taskID)
+    function handleClick(e) {
+        e.preventDefault()
+        updateTask({
+            ...task,
+            status: 'closed'
+        }, task.id).then(refreshTask())
     }
 
-    return <button onClick={handleClick} className="btn btn-outline-danger btn-sm ml-2">
-        Remove <FaTrash/>
+    return <button onClick={handleClick} className="btn btn-dark btn-sm">
+        Finish <FaArchive/>
     </button>;
 }
 
-export function Task({task, onRemoveTask, onNewTask }) {
+export function Task({task, onRemoveTask, updateTask}) {
     const [formStatus, setFormStatus] = useState(false)
     const [status, setStatus] = useState(null)
     const [operations, setOperations] = useState([])
@@ -30,10 +29,6 @@ export function Task({task, onRemoveTask, onNewTask }) {
     useEffect(() => {
         setStatus(task.status);
     }, [])
-
-    // useEffect(()=> {
-    //     setFormStatus(false)
-    // }, [formStatus])
 
     function switchFormStatus() {
         setFormStatus(prevState => !prevState)
@@ -65,15 +60,13 @@ export function Task({task, onRemoveTask, onNewTask }) {
                     {/*// Przyciski "Add operation" i "Finish" mają być widoczne*/}
                     {/*// tylko jeżeli status zadania jest "open"*/}
 
-                    <ButtonAddOperations switchFormStatus={switchFormStatus}/>
-                    <button className="btn btn-dark btn-sm">
-                        Finish <FaArchive/>
-                    </button>
+                    {task.status==='open' && <ButtonAddOperations switchFormStatus={switchFormStatus}/>}
+                    {task.status==='open' && <FinishTaskButton task={task} refreshTask={updateTask}/>}
 
                     {/*Przycisk usuwania ma być widoczny tylko*/}
                     {/*jeżeli nie ma żadnych operacji w zadaniu*/}
 
-                    <RemoveTaskButton taskID={task.id} onRemoveTask={onRemoveTask}/>
+                    <RemoveTaskButton taskID={task.id} onRemoveTask={onRemoveTask} operations={operations}/>
                 </div>
             </div>
             <Operations operations={operations} form={formStatus}

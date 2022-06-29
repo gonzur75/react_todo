@@ -4,6 +4,7 @@ import {CloseTimeFormButton} from "../../UI/Button/CloseTimeFormButton";
 import {ButtonSaveTime} from "../../UI/Button/ButtonSaveTime";
 import {AddTimeButton} from "../../UI/Button/AddTimeButton";
 import {DeleteOperationButton} from "../../UI/Button/DeleteOperationButton";
+import {timeFormatted} from "../../utils/utils";
 
 function AddTimeForm({visible, operationData, setAddTimeFormState, setAddTimeDivState, setOperations}) {
     const [addTimeFormValue, setAddTimeFormValue] = useState('')
@@ -42,16 +43,6 @@ export function flipAddTimeForm(setAddTimeFormState, setAddTimeDivState) {
     setAddTimeDivState(prevState => !prevState)
 }
 
-export function timeFormatted(number) {
-    if (number => 60) {
-        const hours = Math.floor(number / 60);
-        const minutes = number % 60
-        return hours + "h " + minutes + "m"
-    } else {
-        return number + "m"
-    }
-}
-
 export function Operation({operationData, setOperations, onRemoveOperation}) {
     const [addTimeFormState, setAddTimeFormState] = useState(false)
     const [addTimeDivState, setAddTimeDivState] = useState(true)
@@ -77,9 +68,11 @@ export function Operation({operationData, setOperations, onRemoveOperation}) {
             {addTimeDivState &&
                 <div>
                     {/*Przycisk widoczny tylko jeżeli status zadania jest "open"*/}
-                    <AddTimeButton setAddTimeFormState={setAddTimeFormState}
-                                   setAddTimeDivState={setAddTimeDivState}
-                    />
+                    {operationData.task.status==='open' &&
+                        <AddTimeButton
+                            setAddTimeFormState={setAddTimeFormState}
+                            setAddTimeDivState={setAddTimeDivState}
+                    />}
                     <DeleteOperationButton onRemoveOperation={onRemoveOperation} oparationID={operationData.id}/>
                 </div>
             }

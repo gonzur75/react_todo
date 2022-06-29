@@ -47,6 +47,31 @@ export const addTask = async (data) => {
     }
 };
 
+export const updateTask = async (data, id) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}`, {
+            headers: {
+                Authorization: process.env.REACT_APP_API_KEY,
+                "Content-Type": "application/json"
+            },
+            method: "PUT",
+            body: JSON.stringify(data),
+
+        });
+
+        const responseData = await response.json();
+
+        if (responseData.error) {
+            throw new Error("Błąd!");
+        }
+
+        return responseData
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const modifyTask = async (data) => {
     try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
