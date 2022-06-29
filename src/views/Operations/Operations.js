@@ -53,9 +53,7 @@ function AddOperationForm({props}) {
 
 export function Operations(props) {
 
-    function RemoveOperation() {
-        return null;
-    }
+
     return (<>
         <div className="card-body">
             <AddOperationForm props={props}/>
@@ -63,7 +61,9 @@ export function Operations(props) {
 
         <ul className="list-group list-group-flush">
             <RenderOperation operations={props.operations}
-                             setOperations={props.setOperations}/>
+                             setOperations={props.setOperations}
+                             onRemoveOperation={props.onRemoveOperation}
+            />
         </ul>
     </>);
 }

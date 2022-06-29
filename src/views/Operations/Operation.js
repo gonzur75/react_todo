@@ -1,9 +1,9 @@
-import {FaTrash} from "react-icons/fa";
 import Badge from 'react-bootstrap/Badge'
 import {useState} from "react";
 import {CloseTimeFormButton} from "../../UI/Button/CloseTimeFormButton";
 import {ButtonSaveTime} from "../../UI/Button/ButtonSaveTime";
 import {AddTimeButton} from "../../UI/Button/AddTimeButton";
+import {DeleteOperationButton} from "../../UI/Button/DeleteOperationButton";
 
 function AddTimeForm({visible, operationData, setAddTimeFormState, setAddTimeDivState, setOperations}) {
     const [addTimeFormValue, setAddTimeFormValue] = useState('')
@@ -52,7 +52,7 @@ export function timeFormatted(number) {
     }
 }
 
-export function Operation({operationData, setOperations}) {
+export function Operation({operationData, setOperations, onRemoveOperation}) {
     const [addTimeFormState, setAddTimeFormState] = useState(false)
     const [addTimeDivState, setAddTimeDivState] = useState(true)
     return (
@@ -80,7 +80,7 @@ export function Operation({operationData, setOperations}) {
                     <AddTimeButton setAddTimeFormState={setAddTimeFormState}
                                    setAddTimeDivState={setAddTimeDivState}
                     />
-                    <button className="btn btn-outline-danger btn-sm"><FaTrash/></button>
+                    <DeleteOperationButton onRemoveOperation={onRemoveOperation} oparationID={operationData.id}/>
                 </div>
             }
 

@@ -61,10 +61,10 @@ export const AddTaskOperations = async (data = {}, id) => {
     }
 
 };
-export const ModifyTaskOperation = async (data = {}, id, operationId) => {
+export const ModifyTaskOperation = async (data = {}, operationId) => {
 
     try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/operations/${operationId}`, {
+        await fetch(`${process.env.REACT_APP_API_URL}/operations/${operationId}`, {
             headers: {
                 Authorization: process.env.REACT_APP_API_KEY,
                 "Content-Type": "application/json"
@@ -74,6 +74,20 @@ export const ModifyTaskOperation = async (data = {}, id, operationId) => {
         });
 
 
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const RemoveTaskOperation = async (operationId) => {
+
+    try {
+        await fetch(`${process.env.REACT_APP_API_URL}/operations/${operationId}`, {
+            headers: {
+                Authorization: process.env.REACT_APP_API_KEY,
+            },
+            method: 'DELETE',
+        });
     } catch (err) {
         console.log(err);
     }

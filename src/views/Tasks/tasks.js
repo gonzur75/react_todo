@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {FaArchive, FaTrash} from "react-icons/fa";
-import {getTasksOperations} from "../Operations/oparations";
+import {getTasksOperations, RemoveTaskOperation} from "../Operations/oparations";
 import {Operations} from "../Operations/Operations";
 
 function ButtonAddOperations({switchFormStatus}) {
@@ -37,6 +37,10 @@ export function Task({task}) {
 
     }, [])
 
+    function removeOperation(operationID) {
+        RemoveTaskOperation(operationID).then(updateOperations)
+    }
+
 
     return (<>
             <section className="card mt-5 shadow-sm">
@@ -67,7 +71,9 @@ export function Task({task}) {
                     setForm={setFormStatus}
                     setOperations={updateOperations}
                     status={status}
-                    taskID={task.id}/>
+                    taskID={task.id}
+                    onRemoveOperation={removeOperation}
+                />
             </section>
         </>);
 
