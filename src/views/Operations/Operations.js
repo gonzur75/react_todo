@@ -8,6 +8,7 @@ function AddOperationForm({props}) {
 
     if (props.form === true) {
         return <form>
+            <div className="card-body">
             <div className="input-group">
                 <input onChange={event => {setFormValue(event.target.value)}}
                        value={formValue}
@@ -25,6 +26,7 @@ function AddOperationForm({props}) {
                     />
                 </div>
             </div>
+                </div>
         </form>;
     }
 
@@ -34,10 +36,7 @@ export function Operations(props) {
 
 
     return (<>
-        <div className="card-body">
-            <AddOperationForm props={props}/>
-        </div>
-
+        <AddOperationForm props={props}/>
         <ul className="list-group list-group-flush">
             <RenderOperation operations={props.operations}
                              setOperations={props.setOperations}
