@@ -11,7 +11,18 @@ function ButtonAddOperations({switchFormStatus}) {
 }
 
 
-export function Task({task}) {
+function RemoveTaskButton({taskID, onRemoveTask}) {
+
+    function handleClick() {
+        onRemoveTask(taskID)
+    }
+
+    return <button onClick={handleClick} className="btn btn-outline-danger btn-sm ml-2">
+        Remove <FaTrash/>
+    </button>;
+}
+
+export function Task({task, onRemoveTask, onNewTask }) {
     const [formStatus, setFormStatus] = useState(false)
     const [status, setStatus] = useState(null)
     const [operations, setOperations] = useState([])
@@ -43,38 +54,36 @@ export function Task({task}) {
 
 
     return (<>
-            <section className="card mt-5 shadow-sm">
-                <div className="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5>{task.title}</h5>
-                        <h6 className="card-subtitle text-muted">{task.description}</h6>
-                    </div>
-                    <div>
-
-                        {/*// Przyciski "Add operation" i "Finish" mają być widoczne*/}
-                        {/*// tylko jeżeli status zadania jest "open"*/}
-
-                        <ButtonAddOperations switchFormStatus={switchFormStatus}/>
-                        <button className="btn btn-dark btn-sm">
-                            Finish <FaArchive/>
-                        </button>
-
-                        {/*Przycisk usuwania ma być widoczny tylko*/}
-                        {/*jeżeli nie ma żadnych operacji w zadaniu*/}
-
-                        <button className="btn btn-outline-danger btn-sm ml-2">
-                            Remove <FaTrash/>
-                        </button>
-                    </div>
+        <section className="card mt-5 shadow-sm">
+            <div className="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>{task.title}</h5>
+                    <h6 className="card-subtitle text-muted">{task.description}</h6>
                 </div>
-                <Operations operations={operations} form={formStatus}
-                    setForm={setFormStatus}
-                    setOperations={updateOperations}
-                    status={status}
-                    taskID={task.id}
-                    onRemoveOperation={removeOperation}
-                />
-            </section>
-        </>);
+                <div>
+
+                    {/*// Przyciski "Add operation" i "Finish" mają być widoczne*/}
+                    {/*// tylko jeżeli status zadania jest "open"*/}
+
+                    <ButtonAddOperations switchFormStatus={switchFormStatus}/>
+                    <button className="btn btn-dark btn-sm">
+                        Finish <FaArchive/>
+                    </button>
+
+                    {/*Przycisk usuwania ma być widoczny tylko*/}
+                    {/*jeżeli nie ma żadnych operacji w zadaniu*/}
+
+                    <RemoveTaskButton taskID={task.id} onRemoveTask={onRemoveTask}/>
+                </div>
+            </div>
+            <Operations operations={operations} form={formStatus}
+                        setForm={setFormStatus}
+                        setOperations={updateOperations}
+                        status={status}
+                        taskID={task.id}
+                        onRemoveOperation={removeOperation}
+            />
+        </section>
+    </>);
 
 }

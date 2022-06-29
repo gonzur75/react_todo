@@ -22,6 +22,72 @@ export const getTasks = async (successCallback) => {
     }
 };
 
+export const addTask = async (data) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
+            headers: {
+                Authorization: process.env.REACT_APP_API_KEY,
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(data),
+
+        });
+
+        const responseData = await response.json();
+
+        if (responseData.error) {
+            throw new Error("Błąd!");
+        }
+
+        return responseData
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const modifyTask = async (data) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
+            headers: {
+                Authorization: process.env.REACT_APP_API_KEY,
+                "Content-Type": "application/json"
+            },
+            method: "PUT",
+            body: JSON.stringify(data),
+        });
+        const responseData = await response.json();
+        if (responseData.error) {
+            throw new Error("Błąd!");
+        }
+        return responseData
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const removeTask = async (id) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}`, {
+            headers: {
+                Authorization: process.env.REACT_APP_API_KEY,
+            },
+            method: "DELETE"
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error("Błąd!");
+        }
+        return data;
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const getTasksOperations = async (id) => {
 
     try {
